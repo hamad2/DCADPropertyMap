@@ -29,7 +29,7 @@ To clone and run this project locally:
 
 1. Clone the repository:
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/hamad2/DCADPropertyMap.git
     ```
 2. Open the project in Visual Studio 2022 or Visual Studio Code.
 3. Ensure you have the .NET 8 SDK installed.
