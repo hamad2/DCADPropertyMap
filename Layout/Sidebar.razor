@@ -1,0 +1,28 @@
+﻿@inject IJSRuntime JS
+
+<div class="p-3 sidebar" id="sidebar">
+    <h4>Filters</h4>
+
+    <!-- Container for the search widget -->
+    <div id="search-container"></div> 
+    <!-- Container for Parcel ID -->
+    <div id="parcel-id-div" style="margin-top: 20px; padding: 10px; background-color: #fff; text-align: center;">
+        <p>Parcel ID will be displayed here.</p>
+    </div> 
+
+
+    <!-- Container for Google Maps imagery -->
+    <div id="google-image" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px; background-color: #fff; text-align: center;">
+        <p>Google Maps Image will be displayed here.</p>
+    </div> 
+</div>
+<div class="sidebar-toggle" id="sidebar-toggle" @onclick="ToggleSidebar">
+    <span>&#10094;</span>
+</div>
+
+@code {
+    private async Task ToggleSidebar()
+    {
+        await JS.InvokeVoidAsync("toggleSidebar");
+    }
+}

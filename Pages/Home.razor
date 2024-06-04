@@ -1,0 +1,23 @@
+﻿@page "/"
+@inject IJSRuntime JS
+
+<NavMenu />
+
+<div class="container-fluid">
+    <div class="row">
+        <Sidebar />
+        <div class="col p-0" id="map-container" style="margin-left: 300px;">
+            <div id="map"></div>
+        </div>
+    </div>
+</div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("initializeMap");
+        }
+    }
+}
