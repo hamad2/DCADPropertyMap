@@ -37,6 +37,8 @@ window.initializeMap = () => {
         var searchWidget = new Search({
             view: view,
             container: "search-container", // Add the search widget to the sidebar
+            //just for demonestration I used the Search widget but in a real project
+            // we should implement Custom Search.
             sources: [{
                 layer: parcelLayer,
                 searchFields: ["PARCELID", "SITEADDRESS", "OWNERNME1"],
@@ -74,6 +76,7 @@ window.initializeMap = () => {
         });
 
         // Remove the search widget from the map UI
+        // We can enhance the look and feel for all the UI Widget
         view.ui.remove(searchWidget);
 
         // Add ScaleBar widget to the bottom left of the view
@@ -117,7 +120,6 @@ window.initializeMap = () => {
             }
         }
 
-
         function addGoogleMapImage(location) {
             var googleImageDiv = document.getElementById("google-image");
             if (googleImageDiv) {
@@ -131,6 +133,49 @@ window.initializeMap = () => {
                 googleImageDiv.appendChild(img);
             }
         }
+    });
+};
+
+window.loadImagery = (parcelId) => {
+    require([
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/layers/ImageryLayer",
+        "esri/tasks/QueryTask",
+        "esri/tasks/support/Query"
+    ], function (Map, MapView, ImageryLayer, QueryTask, Query) {
+        var imageryLayer = new ImageryLayer({
+            url: "https://maps.dcad.org/prdwa/rest/services/Property/ImageryParcel/MapServer/0"
+        });
+
+        var map = new Map({
+            layers: [imageryLayer]
+        });
+
+        var view = new MapView({
+            container: "imagery-map",
+            map: map,
+            zoom: 18
+        });
+
+        var queryTask = new QueryTask({
+            url: "https://maps.dcad.org/prdwa/rest/services/Property/ParcelQuery/MapServer/4"
+        });
+
+        var query = new Query();
+        query.returnGeometry = true;
+        query.outFields = ["*"];
+        query.where = `PARCELID = '${parcelId}'`;
+
+        queryTask.execute(query).then(function (result) {
+            if (result.features.length > 0) {
+                var feature = result.features[0];
+                view.goTo({
+                    target: feature.geometry,
+                    zoom: 18
+                });
+            }
+        });
     });
 };
 

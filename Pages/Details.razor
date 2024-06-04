@@ -2,6 +2,95 @@
 @page "/details/{ParcelId}"
 @inject HttpClient Http
 @inject NavigationManager Navigation
+@inject IJSRuntime JS
+
+
+@if (isLoading)
+{
+    <p>Loading...</p>
+}
+else if (hasError)
+{
+    <p>Error loading parcel details. Please try again.</p>
+}
+else if (parcelDetails != null)
+{
+    <div class="container mt-4">
+        <h2>Parcel Details</h2>
+        <div class="row">
+            <div class="col-md-8">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th>Parcel ID</th>
+                            <td>@parcelDetails.ParcelID</td>
+                        </tr>
+                        <tr>
+                            <th>Owner Name</th>
+                            <td>@parcelDetails.OwnerName</td>
+                        </tr>
+                        <tr>
+                            <th>Site Address</th>
+                            <td>@parcelDetails.SiteAddress</td>
+                        </tr>
+                        <tr>
+                            <th>Neighborhood</th>
+                            <td>@parcelDetails.Neighborhood</td>
+                        </tr>
+                        <tr>
+                            <th>Map Grid</th>
+                            <td>@parcelDetails.MapGrid</td>
+                        </tr>
+                        <tr>
+                            <th>Account Type</th>
+                            <td>@parcelDetails.AccountType</td>
+                        </tr>
+                        <tr>
+                            <th>Legal Description</th>
+                            <td>@parcelDetails.LegalDescription</td>
+                        </tr>
+                        <tr>
+                            <th>Market Value</th>
+                            <td>@string.Format("{0:C}", parcelDetails.MarketValue)</td>
+                        </tr>
+                        <tr>
+                            <th>Improvement Value</th>
+                            <td>@string.Format("{0:C}", parcelDetails.ImprovementValue)</td>
+                        </tr>
+                        <tr>
+                            <th>Land Value</th>
+                            <td>@string.Format("{0:C}", parcelDetails.LandValue)</td>
+                        </tr>
+                        <tr>
+                            <th>Owner Address</th>
+                            <td>@parcelDetails.OwnerAddress</td>
+                        </tr>
+                        <tr>
+                            <th>Owner City</th>
+                            <td>@parcelDetails.OwnerCity</td>
+                        </tr>
+                        <tr>
+                            <th>Owner State</th>
+                            <td>@parcelDetails.OwnerState</td>
+                        </tr>
+                        <tr>
+                            <th>Owner Zip</th>
+                            <td>@parcelDetails.OwnerZip</td>
+                        </tr>
+                        <tr>
+                            <th>Owner Zip +4</th>
+                            <td>@parcelDetails.OwnerZip4</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="btn btn-primary" @onclick="BackToMap">Back to Map</button>
+            </div>
+            <div class="col-md-4">
+                <div id="imagery-map" style="height: 400px;"></div>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
     [Parameter]
@@ -16,6 +105,7 @@
         if (!string.IsNullOrEmpty(ParcelId))
         {
             await FetchParcelDetails(ParcelId);
+            await LoadImagery(ParcelId);
         }
     }
 
@@ -44,88 +134,13 @@
         }
     }
 
+    private async Task LoadImagery(string parcelId)
+    {
+        await JS.InvokeVoidAsync("loadImagery", parcelId);
+    }
+
     private void BackToMap()
     {
         Navigation.NavigateTo("/");
     }
-}
-
-@if (isLoading)
-{
-    <p>Loading...</p>
-}
-else if (hasError)
-{
-    <p>Error loading parcel details. Please try again.</p>
-}
-else if (parcelDetails != null)
-{
-    <div class="container mt-4">
-        <h2>Parcel Details</h2>
-        <table class="table table-striped">
-            <tbody>
-                <tr>
-                    <th>Parcel ID</th>
-                    <td>@parcelDetails.ParcelID</td>
-                </tr>
-                <tr>
-                    <th>Owner Name</th>
-                    <td>@parcelDetails.OwnerName</td>
-                </tr>
-                <tr>
-                    <th>Site Address</th>
-                    <td>@parcelDetails.SiteAddress</td>
-                </tr>
-                <tr>
-                    <th>Neighborhood</th>
-                    <td>@parcelDetails.Neighborhood</td>
-                </tr>
-                <tr>
-                    <th>Map Grid</th>
-                    <td>@parcelDetails.MapGrid</td>
-                </tr>
-                <tr>
-                    <th>Account Type</th>
-                    <td>@parcelDetails.AccountType</td>
-                </tr>
-                <tr>
-                    <th>Legal Description</th>
-                    <td>@parcelDetails.LegalDescription</td>
-                </tr>
-                <tr>
-                    <th>Market Value</th>
-                    <td>@string.Format("{0:C}", parcelDetails.MarketValue)</td>
-                </tr>
-                <tr>
-                    <th>Improvement Value</th>
-                    <td>@string.Format("{0:C}", parcelDetails.ImprovementValue)</td>
-                </tr>
-                <tr>
-                    <th>Land Value</th>
-                    <td>@string.Format("{0:C}", parcelDetails.LandValue)</td>
-                </tr>
-                <tr>
-                    <th>Owner Address</th>
-                    <td>@parcelDetails.OwnerAddress</td>
-                </tr>
-                <tr>
-                    <th>Owner City</th>
-                    <td>@parcelDetails.OwnerCity</td>
-                </tr>
-                <tr>
-                    <th>Owner State</th>
-                    <td>@parcelDetails.OwnerState</td>
-                </tr>
-                <tr>
-                    <th>Owner Zip</th>
-                    <td>@parcelDetails.OwnerZip</td>
-                </tr>
-                <tr>
-                    <th>Owner Zip +4</th>
-                    <td>@parcelDetails.OwnerZip4</td>
-                </tr>
-            </tbody>
-        </table>
-        <button class="btn btn-primary" @onclick="BackToMap">Back to Map</button>
-    </div>
 }
