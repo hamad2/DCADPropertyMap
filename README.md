@@ -1,19 +1,43 @@
-This is a very small and incomplete Parcel Viewer for DCAD
+# DCAD Parcel Viewer (Demo)
 
- - Visual Studio 2022 Net 8 Blazor WebAssembly ArcGIS
- - Bootstrap 5.1
- -  Esri Javascript SDK 4.29 (Latest) 
- - Data From DCAD Rest Folder. Google
- -  Imagery Map( it may not show due to the API Key)
+This is a small and incomplete Parcel Viewer for the Dallas Central Appraisal District (DCAD).
 
- -  I decided to use the SearchWidget for this demo,   but in a real application we should implement Custome Search.
+## Technologies Used
 
-At first I thought Leaflet will do the job,  then I decided to to use Esri JS SDK.
+- **Visual Studio 2022**
+- **.NET 8 Blazor WebAssembly**
+- **Bootstrap 5.1**
+- **Esri JavaScript SDK 4.29 (Latest)**
+
+## Data Sources
+
+- **DCAD REST Services**
+- **Google Imagery Map** (Note: Imagery map may not display due to API key restrictions)
+
+## Features
+
+- **Search Widget**: This demo utilizes the Esri SearchWidget for searching parcels. In a real-world application, a custom search implementation would be recommended.
+- **Imagery Display**: Displays parcel imagery using the DCAD ImageryParcel Map Service.
+
+## Development Decisions
+
+Initially, Leaflet was considered for this project. However, the Esri JavaScript SDK was chosen for its comprehensive GIS capabilities and seamless integration with Esri services.
+
+## Getting Started
+
+To clone and run this project locally:
+
+1. Clone the repository:
+    ```bash
+    git clone <repository-url>
+    ```
+2. Open the project in Visual Studio 2022 or Visual Studio Code.
+3. Ensure you have the .NET 8 SDK installed.
+4. Build and run the project.
+
+---
 
 
-Clone the Repo:
-Open it in visual Studio 2022 or visual studio Code with Net 8 SDK installed
-build and RUN
 
 ![image](https://github.com/hamad2/DCADPropertyMap/assets/4844929/b702c5d8-50e8-409e-ac9d-dcf24201de2e)
 
