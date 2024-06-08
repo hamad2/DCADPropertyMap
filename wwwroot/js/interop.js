@@ -10,8 +10,10 @@ window.initializeMap = () => {
         "esri/widgets/Compass",
         "esri/widgets/Home",
         "esri/widgets/Zoom",
+        "esri/widgets/Legend",
+        "esri/widgets/Expand",
         "esri/geometry/Point"
-    ], function (Map, MapView, TileLayer, FeatureLayer, Search, ScaleBar, Compass, Home, Zoom, Point) {
+    ], function (Map, MapView, TileLayer, FeatureLayer, Search, ScaleBar, Compass, Home, Zoom,Legend,Expand, Point) {
         var parcelLayer = new FeatureLayer({
             url: "https://maps.dcad.org/prdwa/rest/services/Property/ParcelQuery/MapServer/4"
         });
@@ -33,12 +35,36 @@ window.initializeMap = () => {
             center: [-96.7969, 32.7763], // Longitude, latitude of Dallas
             zoom: 11 // Set the zoom level directly
         });
+        const legend = new Legend({
+            view: view,
+            container: "legend"
+        });
+
+        const legendDiv = document.getElementById("legend");
+        legend.when(function () {
+            legendDiv.appendChild(legend.domNode);
+        });
+
+        document.getElementById("legendToggle").addEventListener("click", function () {
+            const legendDiv = document.getElementById("legend");
+            if (legendDiv.style.display === "none" || legendDiv.style.display === "") {
+                legendDiv.style.display = "block";
+            } else {
+                legendDiv.style.display = "none";
+            }
+        });
+        document.getElementById("mapToolsToggle").addEventListener("click", function () {
+            const mapToolsPanel = document.getElementById("mapToolsPanel");
+            if (mapToolsPanel.style.display === "none" || mapToolsPanel.style.display === "") {
+                mapToolsPanel.style.display = "block";
+            } else {
+                mapToolsPanel.style.display = "none";
+            }
+        });
 
         var searchWidget = new Search({
             view: view,
             container: "search-container", // Add the search widget to the sidebar
-            //just for demonestration I used the Search widget but in a real project
-            // we should implement Custom Search.
             sources: [{
                 layer: parcelLayer,
                 searchFields: ["PARCELID", "SITEADDRESS", "OWNERNME1"],
@@ -76,7 +102,6 @@ window.initializeMap = () => {
         });
 
         // Remove the search widget from the map UI
-        // We can enhance the look and feel for all the UI Widget
         view.ui.remove(searchWidget);
 
         // Add ScaleBar widget to the bottom left of the view
@@ -112,6 +137,7 @@ window.initializeMap = () => {
         view.ui.add(zoom, {
             position: "top-left"
         });
+
 
         function addParcelIdDiv(parcelId) {
             var parcelIdDiv = document.getElementById("parcel-id-div");

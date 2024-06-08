@@ -4,6 +4,58 @@
 @inject NavigationManager Navigation
 @inject IJSRuntime JS
 
+@code {
+    [Parameter]
+    public string ParcelId { get; set; }
+
+    private ParcelDetails parcelDetails;
+    private bool isLoading = true;
+    private bool hasError = false;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!string.IsNullOrEmpty(ParcelId))
+        {
+            await FetchParcelDetails(ParcelId);
+            await LoadImagery(ParcelId);
+        }
+    }
+
+    private async Task FetchParcelDetails(string parcelId)
+    {
+        try
+        {
+            var url = $"https://maps.dcad.org/prdwa/rest/services/Property/ParcelQuery/MapServer/4/query?where=PARCELID='{parcelId}'&outFields=*&f=json";
+            var response = await Http.GetFromJsonAsync<ParcelQueryResponse>(url);
+            if (response?.Features?.Count > 0)
+            {
+                parcelDetails = response.Features[0].Attributes;
+            }
+            else
+            {
+                hasError = true;
+            }
+        }
+        catch
+        {
+            hasError = true;
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task LoadImagery(string parcelId)
+    {
+        await JS.InvokeVoidAsync("loadImagery", parcelId);
+    }
+
+    private void BackToMap()
+    {
+        Navigation.NavigateTo("/");
+    }
+}
 
 @if (isLoading)
 {
@@ -90,57 +142,4 @@ else if (parcelDetails != null)
             </div>
         </div>
     </div>
-}
-
-@code {
-    [Parameter]
-    public string ParcelId { get; set; }
-
-    private ParcelDetails parcelDetails;
-    private bool isLoading = true;
-    private bool hasError = false;
-
-    protected override async Task OnParametersSetAsync()
-    {
-        if (!string.IsNullOrEmpty(ParcelId))
-        {
-            await FetchParcelDetails(ParcelId);
-            await LoadImagery(ParcelId);
-        }
-    }
-
-    private async Task FetchParcelDetails(string parcelId)
-    {
-        try
-        {
-            var url = $"https://maps.dcad.org/prdwa/rest/services/Property/ParcelQuery/MapServer/4/query?where=PARCELID='{parcelId}'&outFields=*&f=json";
-            var response = await Http.GetFromJsonAsync<ParcelQueryResponse>(url);
-            if (response?.Features?.Count > 0)
-            {
-                parcelDetails = response.Features[0].Attributes;
-            }
-            else
-            {
-                hasError = true;
-            }
-        }
-        catch
-        {
-            hasError = true;
-        }
-        finally
-        {
-            isLoading = false;
-        }
-    }
-
-    private async Task LoadImagery(string parcelId)
-    {
-        await JS.InvokeVoidAsync("loadImagery", parcelId);
-    }
-
-    private void BackToMap()
-    {
-        Navigation.NavigateTo("/");
-    }
 }

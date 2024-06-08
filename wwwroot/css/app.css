@@ -198,3 +198,49 @@ body, html {
 code {
     color: #c02d76;
 }
+
+
+#legend {
+   /* position: absolute;*/
+    top: 10px;
+    right: 10px;
+    z-index: 99;
+    background: white;
+    padding: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    display: none; /* Initially hidden */
+}
+.nav-item {
+    display: inline-block;
+    margin: 10px;
+}
+
+.nav-link {
+    color: #e8e8e8;
+    cursor: pointer;
+}
+    .nav-link:hover {
+        color: #ffffff;
+    }
+
+    .nav-link:active {
+        color: #ffcc00;
+    }
+
+    .nav-link.clicked {
+        color: #ffcc00;
+    }
+
+#mapToolsPanel {
+    display: none;
+    background-color: #113c66;
+    border:none;
+    color:#fff;
+    position: absolute;
+    top: 10px;
+    right: 500px; /* based on Map Tools button */
+    height: 90px;
+    z-index: 100;
+    padding: 10px;
+    /*box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);*/
+}
