@@ -9,14 +9,18 @@ body, html {
     height: calc(100vh - 56px); /* Remaining height after the navbar */
     width: 100%;
 }
-
+.container-fluid {
+    padding-right: 0px;
+    padding-left: 0px;
+   
+}
 .sidebar {
     height: calc(100vh - 90px); /* Remaining height after the navbar */
     overflow-y: auto;
     transition: transform 0.3s, width 0.3s;
     width: 300px;
     position: fixed;
-    top: 90px; /* Adjusted top margin */
+    /* top: 90px;*/ /* Adjusted top margin */
     left: 0;
     background-color: #e8e8e8;
     color: black;
